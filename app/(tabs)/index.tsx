@@ -1,31 +1,51 @@
-import { StyleSheet } from 'react-native';
+import { useEffect, useState } from "react";
+import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
+import { Product } from "../../types/product";
+import { Link } from "expo-router";
 
-import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
-
-export default function TabOneScreen() {
+export default function () {
+  const [products, setProducts] = useState<Product[]>([]);
+  useEffect(() => {
+    fetch("https://dummyjson.com/products")
+      .then((res) => res.json())
+      .then((data) => {
+        const { products } = data;                                                                                                                                                                                                                                                                                                                      
+        setProducts(products);
+      });
+  }, []);
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+    <View style={{ flex: 1, backgroundColor: "#fff" }}>
+      <FlatList
+        data={products}
+        keyExtractor={(item) => `${item.id}`}
+        renderItem={({ item }) => (
+          <TouchableOpacity style={{ flexDirection: "row", padding: 16 }}>
+            <Image
+              style={{ flex: 1 }}
+              source={{ uri: item.thumbnail }}
+              width={300}
+              height={150}
+            />
+            <View style={{ flex: 1, padding: 16 }}>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: 32,
+                  lineHeight: 42,
+                  maxHeight: 84,
+                  overflow: "hidden",
+                }}
+              >
+                {item.title}
+              </Text>
+              <Text style={{ fontSize: 16, lineHeight: 24, maxHeight: 72 }}>
+                {item.description}
+              </Text>
+              <Link href={`/product/${item.id}`}>inspect</Link>
+            </View>
+          </TouchableOpacity>
+        )}
+      />
     </View>
   );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});
+};
