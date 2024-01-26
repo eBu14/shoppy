@@ -1,51 +1,39 @@
 import { useEffect, useState } from "react";
-import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
-import { Product } from "../../types/product";
+import { Button, FlatList, Image, Text, TouchableOpacity, View } from "react-native";
+import { Anime } from "../../types/product";
 import { Link } from "expo-router";
 
 export default function () {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [Animes, setAnimes] = useState<Anime[]>([]);
   useEffect(() => {
-    fetch("https://dummyjson.com/products")
+    fetch("https://kitsu.io/api/edge/anime")
       .then((res) => res.json())
       .then((data) => {
-        const { products } = data;                                                                                                                                                                                                                                                                                                                      
-        setProducts(products);
+        const { animes } = data;
+        setAnimes(animes);
       });
   }, []);
   return (
-    <View style={{ flex: 1, backgroundColor: "#fff" }}>
-      <FlatList
-        data={products}
-        keyExtractor={(item) => `${item.id}`}
-        renderItem={({ item }) => (
-          <TouchableOpacity style={{ flexDirection: "row", padding: 16 }}>
-            <Image
-              style={{ flex: 1 }}
-              source={{ uri: item.thumbnail }}
-              width={300}
-              height={150}
-            />
-            <View style={{ flex: 1, padding: 16 }}>
-              <Text
-                style={{
-                  fontWeight: "bold",
-                  fontSize: 32,
-                  lineHeight: 42,
-                  maxHeight: 84,
-                  overflow: "hidden",
-                }}
-              >
-                {item.title}
-              </Text>
-              <Text style={{ fontSize: 16, lineHeight: 24, maxHeight: 72 }}>
-                {item.description}
-              </Text>
-              <Link href={`/product/${item.id}`}>inspect</Link>
-            </View>
-          </TouchableOpacity>
-        )}
-      />
+    <View>
+      <View style={{ height: 400 }}>
+        <View style={{ height: 400 }}>
+          <Image
+            style={{ flex: 1 }}
+            source={{
+              uri: "https://media.kitsu.io/anime/poster_images/1/original.jpg",
+            }}
+            height={400}
+          />
+        </View>
+        <View>
+          <Text style={{ fontSize: 24 , color: "white"}}>Demon Slayer: Kimetsu ...</Text>
+          <Text style={{ fontSize: 12 , color: "white"}}>Demon Slayer: Kimetsu ...</Text>
+          <View style={{ flexDirection: "row" }}>
+            <Link href={`/product/id`}>play</Link>
+            <Link href={`/product/id`}>+ my list</Link>
+          </View>
+        </View>
+      </View>
     </View>
   );
 };

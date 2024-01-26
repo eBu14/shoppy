@@ -3,13 +3,11 @@ import Constans from "expo-constants";
 import { Slot, Stack } from "expo-router";
 export default function RootLayout() {
   return (
-    <View style={{ flex: 1, paddingTop: Constans.statusBarHeight }}>
-      <Text>Header</Text>
-      <Stack>
+    <View style={{ flex: 1 }}>
+      <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="product/[id]"/>
+        <Stack.Screen name="product/[id]" />
       </Stack>
-      <Text>Footer</Text>
     </View>
   );
 }
